@@ -20,4 +20,7 @@ router
   .put(updateThought)
   .delete(deleteThought);
 
+// /reactions
+router('/:thoughtid/reactions')
+
 module.exports = router;
