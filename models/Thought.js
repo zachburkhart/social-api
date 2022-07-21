@@ -3,8 +3,32 @@ const date = require('moment');
 
 
 const ReactionSchema = new Schema(
-    
-)
+  {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId()
+    },
+    reactionBody: {
+      type: String,
+      required: true,
+      maxlength: 280
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: createdAtVal => date(createdAtVal)
+    },  
+    },
+  {
+    toJSON: {
+      getters: true
+    },
+  }
+);
 
 
 const ThoughtSchema = new Schema(
@@ -12,7 +36,8 @@ const ThoughtSchema = new Schema(
     thoughtText: {
       type: String,
       required: true,
-      trim: true
+      minlength: 1,
+      maxlength: 280
     },
     createdAt: {
       type: Date,
@@ -23,19 +48,13 @@ const ThoughtSchema = new Schema(
       type: String,
       required: true,
     },
-    reactions: {
-      type: String,
-      required: true,
-      enum: ['Personal', 'Small', 'Medium', 'Large', 'Extra Large'],
-      default: 'Large'
-    }
+    reactions: [ReactionSchema],
   },
   {
     toJSON: {
       virtuals: true,
       getters: true
     },
-    // prevents virtuals from creating duplicate of _id as `id`
     id: false
   }
 );
