@@ -3,7 +3,7 @@ const { Thought } = require('../models');
 const thoughtController = {
   // get all thoughts
   getAllThought(req, res) {
-    Pizza.find({})
+    Thought.find({})
       .populate({
         path: 'reaction',
         select: '-__v'
@@ -58,6 +58,20 @@ const thoughtController = {
       .then(dbThoughtData => res.json(dbThoughtData))
       .catch(err => res.json(err));
   },
+
+  // create reaction
+  createReaction({ body }, res) {
+    Reaction.create(body)
+      .then(dbReactionData => res.json(dbReactionData))
+      .catch(err => res.json(err));
+  },
+
+  // delete reaction
+  deleteReaction({ params }, res) {
+    Reaction.findOneAndDelete({ _id: params.id })
+      .then(dbReactionData => res.json(dbReactionData))
+      .catch(err => res.json(err));
+  }
 };
 
 module.exports = thoughtController;
